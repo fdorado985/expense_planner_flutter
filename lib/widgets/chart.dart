@@ -1,3 +1,4 @@
+import 'package:expense_planner_flutter/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -25,6 +26,12 @@ class Chart extends StatelessWidget {
     });
   }
 
+  double get _totalSpending {
+    return _groupedTransactionValues.fold(0.0, (sum, item) {
+      return sum + item['amount'];
+    });
+  }
+
   Chart({@required this.recentTransactions});
 
   @override
@@ -35,7 +42,13 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(6.0),
       child: Row(
         children: _groupedTransactionValues.map((data) {
-          return Text('${data['day']}: ${data['amount'].toString()}');
+          return ChartBar(
+            data['day'],
+            data['amount'],
+            _totalSpending == 0.0
+                ? 0.0
+                : (data['amount'] as double) / _totalSpending,
+          );
         }).toList(),
       ),
     );
