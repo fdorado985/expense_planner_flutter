@@ -31,10 +31,27 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               onSubmitted: (_) => _submitData,
             ),
-            FlatButton(
+            Container(
+              height: 70.0,
+              child: Row(
+                children: [
+                  Text('No Date Chosen!'),
+                  FlatButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {},
+                    child: Text(
+                      'Choose Date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            RaisedButton(
               onPressed: _submitData,
               child: Text('Add Transaction'),
-              textColor: Colors.purple,
+              color: Theme.of(context).primaryColor,
+              textColor: Theme.of(context).textTheme.button.color,
             ),
           ],
         ),
