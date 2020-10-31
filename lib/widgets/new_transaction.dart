@@ -49,6 +49,9 @@ class _NewTransactionState extends State<NewTransaction> {
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
+
     widget.onPressedNewTransaction(enteredTitle, enteredAmount);
+
+    Navigator.of(context).pop();
   }
 }
