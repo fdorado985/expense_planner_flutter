@@ -68,28 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final _mediaQuery = MediaQuery.of(context);
     final _isLandscape = _mediaQuery.orientation == Orientation.landscape;
-    final PreferredSizeWidget _appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: Text('Personal Expenses'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => _startNewTransaction(context),
-                ),
-              ],
-            ),
-          )
-        : AppBar(
-            title: Text('Personal Expenses'),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startNewTransaction(context),
-              )
-            ],
-          );
+    final PreferredSizeWidget _appBar = _buildAppBar();
     final _txListWidget = Container(
       height: (_mediaQuery.size.height -
               _appBar.preferredSize.height -
@@ -131,6 +110,37 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () => _startNewTransaction(context),
                   ),
           );
+  }
+
+  Widget _buildAppBar() {
+    return Platform.isIOS ? _buildCupertinoAppBar() : _buildMaterialAppBar();
+  }
+
+  Widget _buildCupertinoAppBar() {
+    return CupertinoNavigationBar(
+      middle: Text('Personal Expenses'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            child: Icon(CupertinoIcons.add),
+            onTap: () => _startNewTransaction(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMaterialAppBar() {
+    return AppBar(
+      title: Text('Personal Expenses'),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startNewTransaction(context),
+        )
+      ],
+    );
   }
 
   List<Widget> _buildLandscapeContent(
