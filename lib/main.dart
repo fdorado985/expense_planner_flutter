@@ -105,34 +105,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (_isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Show Chart',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).accentColor,
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
+            if (_isLandscape) _buildLandscapeContent(),
             if (!_isLandscape)
-              Container(
-                height: (_mediaQuery.size.height -
-                        _appBar.preferredSize.height -
-                        _mediaQuery.padding.top) *
-                    0.3,
-                child: Chart(recentTransactions: _recentTransactions),
-              ),
-            if (!_isLandscape) _txListWidget,
+              ..._buildPortraitContent(_mediaQuery, _appBar, _txListWidget),
             if (_isLandscape)
               _showChart
                   ? Container(
@@ -165,6 +140,41 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () => _startNewTransaction(context),
                   ),
           );
+  }
+
+  Widget _buildLandscapeContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Show Chart',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        Switch.adaptive(
+          activeColor: Theme.of(context).accentColor,
+          value: _showChart,
+          onChanged: (value) {
+            setState(() {
+              _showChart = value;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildPortraitContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
+    return [
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(recentTransactions: _recentTransactions),
+      ),
+      txListWidget,
+    ];
   }
 
   void _startNewTransaction(BuildContext context) {
